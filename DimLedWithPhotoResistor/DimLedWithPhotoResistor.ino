@@ -2,7 +2,7 @@
  Name:		DimLedWithPhotoResistor.ino
  Created:	6/5/2015 9:38:47 PM
  Author:	Micke
-*/
+ */
 #include <LedControl.h>
 #include "MickesLedControl.h"
 
@@ -17,9 +17,9 @@
 #define NUM_OF_LEDCONTROLS 1
 
 //Analog Threshold values for brightness to change. In range between 0 and photocellValueMax
-int lightThreshholds[3] = { 100, 300, 600 }; 
+int lightThreshholds[3] = { 100, 300, 600 };
 //Values to be returned from brightness control function. Must be one more than light Thresholds
-int brightnessLevels[4] = { 10, 80, 150, 240 }; 
+int brightnessLevels[4] = { 10, 80, 150, 240 };
 //How much under or over the sensor vale has to be to change light level
 int thresholdSensitivity = 30;
 //How much the currentPhotocell will increase or decrease at on time.
@@ -36,7 +36,7 @@ byte lightLevel = 0;
 long brightnessLevelTimer = 0;
 
 int photocellReading;     // the analog reading from the sensor divider
-int LEDbrightness;        
+int LEDbrightness;
 int PWMCounter = 0;
 
 int photoCreadMax = 0;
@@ -49,7 +49,7 @@ void setup(void) {
 	// We'll send debugging information via the Serial monitor
 	Serial.begin(9600);
 	//pinMode(LED_2_PIN, OUTPUT);
-	
+
 	MickeLC.initLedDisplay(0, 5);
 	//lastPhotocellReading = analogRead(PHOTO_CELL_PIN);
 
@@ -59,7 +59,7 @@ void loop(void) {
 	int steppedReading;
 	//digitalWrite(LED_2_PIN, HIGH);
 	photocellReading = analogRead(PHOTO_CELL_PIN);
-	
+
 
 	Serial.print("Analog reading = ");
 	Serial.println(photocellReading);     // the raw analog reading
@@ -67,7 +67,7 @@ void loop(void) {
 	steppedReading = setbrightnesslevel(photocellReading);
 
 	Serial.print("Stepped reading = ");
-	Serial.println(steppedReading);  
+	Serial.println(steppedReading);
 
 	Serial.print("Current reading = ");
 	Serial.println(currentPhotocellReading);
@@ -80,9 +80,9 @@ void loop(void) {
 	//steppedReading = 1023 - steppedReading;
 	//now we have to map 0-1023 to 0-255 since thats the range analogWrite uses
 	//LEDbrightness = map(photocellReading, 100, 800, 255, 0);
-	
+
 	LEDbrightness = steppedReading;
-	
+
 	Serial.print("Led brightness = ");
 	Serial.println(LEDbrightness);
 	analogWrite(LED_1_PIN, LEDbrightness);
@@ -102,7 +102,7 @@ void loop(void) {
 
 int setbrightnesslevel(int newPhotocellReading)
 {
-	
+
 	int nextLightThreshold;
 
 	//Timer that controls how often brightness update will occur
@@ -131,9 +131,9 @@ int setbrightnesslevel(int newPhotocellReading)
 		Serial.println("Brightness increased");
 		//Increase the current photocell value
 		currentPhotocellReading = currentPhotocellReading += photocellValueStepping;
-		
 
-		
+
+
 		Serial.print("Next light threshold = ");
 		Serial.println(nextLightThreshold);
 
